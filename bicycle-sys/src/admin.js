@@ -6,6 +6,10 @@ import NavLeft from '@/components/NavLeft'
 import '@/style/common.less'
 
 class Admin extends React.Component {
+    constructor(props){
+        super(props);
+    }
+
     render() {
         return (
             <div>
