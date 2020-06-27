@@ -1,21 +1,34 @@
 import React from 'react'
 import {Menu} from 'antd';
-import {MailOutlined, AppstoreOutlined, SettingOutlined} from '@ant-design/icons';
+// import {MailOutlined, AppstoreOutlined, SettingOutlined} from '@ant-design/icons';
 import MenuConfig from '@/config/menuConfig'
 import {NavLink} from 'react-router-dom'
+import {connect} from 'react-redux'
+import {switchMenu} from '@/redux/action'
 import './index.less'
 
 const {SubMenu} = Menu;
 
 class NavLeft extends React.Component {
-    constructor(props) {
-        super(props)
+    constructor() {
+        super()
+        this.state = {
+            currentKey: ''
+        }
     }
 
     componentWillMount() {
         const menuTreeNode = this.renderMenu(MenuConfig)
         this.setState({
             menuTreeNode
+        })
+    }
+
+    handleClick = (item) => {
+        const {dispatch} = this.props
+        dispatch(switchMenu(item.item.props.title))
+        this.setState({
+            currentKey: item.key
         })
     }
 
@@ -29,7 +42,11 @@ class NavLeft extends React.Component {
                     </SubMenu>
                 )
             }
-            return <Menu.Item title={item.title} key={item.key}><NavLink to={'/admin' + item.key}>{item.title}</NavLink></Menu.Item>
+            return (
+                <Menu.Item title={item.title} key={item.key} onClick={this.handleClick}>
+                    <NavLink to={'/admin' + item.key}>{item.title}</NavLink>
+                </Menu.Item>
+            )
         })
     }
 
@@ -48,4 +65,4 @@ class NavLeft extends React.Component {
     }
 }
 
-export default NavLeft
+export default connect()(NavLeft);
